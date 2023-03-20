@@ -23,12 +23,13 @@
                         placeholder="Tu nombre"
                         class="border p-3 w-full rounded @error('name') border-red-600 @enderror"
                         value="{{old('name')}}">
-                </div> 
-
                     @error('name')
-                        <p class="bg-red-500 text-white my-2 rounded-lg txt-sm p-2
+                       <p class="bg-red-500 text-white my-2 rounded-lg txt-sm p-2
                         text-center">{{$message}}</p>
                     @enderror
+                </div> 
+
+                    
 
                 <div class="mb-5">
                     <label for="username" class="mb-2 block uppercase text-gray-500 font-bold" >
@@ -41,11 +42,12 @@
                         placeholder="Tu nombre de usuario"
                         class="border p-3 w-full rounded @error('username') border-red-600 @enderror"
                         value="{{old('name')}}"/>
-                </div>
                     @error('username')
                         <p class="bg-red-500 text-white my-2 rounded-lg txt-sm p-2
                         text-center">{{$message}}</p>
                     @enderror
+                </div>
+                    
 
                 <div class="mb-5">
                     <label for="email" class="mb-2 block uppercase text-gray-500 font-bold" >
@@ -58,11 +60,12 @@
                         placeholder="Tu email"
                         class="border p-3 w-full rounded @error('emial') border-red-600 @enderror"
                         value="{{old('name')}}"/>
-                </div> 
                     @error('email')
                         <p class="bg-red-500 text-white my-2 rounded-lg txt-sm p-2
                         text-center">{{$message}}</p>
                     @enderror
+                </div> 
+                    
 
                 <div class="mb-5">
                     <label for="password" class="mb-2 block uppercase text-gray-500 font-bold" >
@@ -74,11 +77,12 @@
                         type="password"
                         placeholder="Tu contraseña"
                         class="border p-3 w-full rounded @error('password') border-red-600 @enderror"/>
-                </div> 
                     @error('password')
                         <p class="bg-red-500 text-white my-2 rounded-lg txt-sm p-2
                         text-center">{{$message}}</p>
                     @enderror
+                </div> 
+                   
 
                 <div class="mb-5">
                     <label for="password_confiration" class="mb-2 block uppercase text-gray-500 font-bold" >

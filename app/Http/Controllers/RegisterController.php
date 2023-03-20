@@ -37,7 +37,7 @@ class RegisterController extends Controller
 
         //Autenticar usuario
         auth()->attempt([
-            'emial'=> $request->email,
+            'email'=> $request->email,
             'password' => $request->password
         ]);
 
