@@ -6,68 +6,78 @@
 
 @section('contenido')
     <div class="flex justify-center">
-        <div class="w-full md:w-2/3 lg:w-1/2 flex flex-col items-center md:flex-row">
-        </div>
-        <div class="md:w-2/3 lg:w-1/2 px-5">
-            <img src="{{asset('img/usuario.svg')}}" alt="imagen usuario">
-        </div>
-        <div class="md:w-2/3 lg:w-1/2 px-5 flex flex-col items-ceter md:justify-center md:items-center py-10 md:py-10">
+        <div class="w-full md:w-2/3 lg:w-1/2 flex flex-col items-center md:flex-row">    
+            <div class="md:w-2/3 lg:w-1/2 px-5">
+                <img src="{{ 
+                    $user->imagen ? 
+                    asset('perfiles') . '/' . $user->imagen : 
+                    asset('img/usuario.svg')}}" 
+                    alt="imagen usuario">
+            </div>
+            <div class="md:w-2/3 lg:w-1/2 px-5 flex flex-col items-ceter md:justify-center md:items-start py-10 md:py-10">
 
-            <div>
-                <p class="text-gray-700 text-2xl">{{$user->username}}</p>
+                <div class="flex items-center gap-2">
+                    <p class="text-gray-700 text-2xl">{{$user->username}}</p>
+                    @auth
+                        @if($user->id === auth()->user()->id)
+                            <a href="{{route('perfil.store')}}" class="text-gray-500 hover:text-gray-600 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                    <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+                                </svg>  
+                            </a>
+                        @endif
+                    @endauth
+                </div>
+
+                <p class="text-gray-700 text-sm mb-3 font-bold mt-5">
+                    {{ $user->followers->count() }}
+                    <span class="font-normal">@choice('Seguidor|Seguidores', $user->followers->count())</span>
+                </p>
+
+                <p class="text-gray-700 text-sm mb-3 font-bold">
+                    {{ $user->followings->count() }}
+                    <span class="font-normal">Siguiendo</span>
+                </p>
+
+                <p class="text-gray-700 text-sm mb-3 font-bold">
+                    {{$user->posts->count()}}
+                    <span class="font-normal">Posts</span>
+                </p>
+
                 @auth
-                    @if($user->id === auth()->user()->id)
-                        <a href="">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                            
-                        </a>
+                @if($user->id != auth()->user()->id)
+
+                    @if(!$user->siguiendo(auth()->user()))
+                        <form action="{{ route('users.follow', $user) }}" method="POST">
+                            @csrf
+                            <input
+                                type="submit"
+                                class="bg-blue-600 text-white uppercase rounded-lg px-3 
+                                py-1 text-xs font-bold cursor-pointer"
+                                value="Seguir">
+                        </form>
+
+                    @else
+
+                        <form action="{{ route('users.unfollow', $user) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input
+                                type="submit"
+                                class="bg-red-600 text-white uppercase rounded-lg px-3 
+                                py-1 text-xs font-bold cursor-pointer"
+                                value="Dejar de Seguir">
+                        </form>
                     @endif
+
+                @endif
                 @endauth
             </div>
-
-            <p class="text-gray-700 text-sm mb-3 font-bold mt-5">
-                
-                <span class="font-normal">Seguidores</span>
-            </p>
-            <p class="text-gray-700 text-sm mb-3 font-bold">
-
-                <span class="font-normal">Seguidores</span>
-            </p>
-            <p class="text-gray-700 text-sm mb-3 font-bold">
-
-                <span class="font-normal">Seguidores</span>
-            </p>
         </div>
     </div>
 
     <section class="container mx-auto mt-10">
-        <h2 class="text-4xl text-center font-black my-10">Publicidad</h2>
-
-        @if($posts->count())
-        
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cold-4 gap-6">
-                @foreach ($posts as $post)
-                    <div>
-                        <a href="{{ route('posts.show', ['post' => $post, 'user' => $user]) }}">
-                            <img src="{{ asset('uploads') . "/" . $post->imagen}}" alt="Imagen del post {{$post->titulo}}">
-                        </a>
-                    </div>
-
-
-                @endforeach
-            </div>
-
-            <div class="my-5">
-                {{$posts->links()}}
-            </div>
-        @else
-
-            <p class="text-gray-600 uppercase text-sm text-center font-bold">No hay posts</p>
-
-        @endif
-
-
+        <h2 class="text-4xl text-center font-black my-10">Publicaciones</h2>
+        <x-listar-post :posts="$posts"/>
     </section>
 @endsection

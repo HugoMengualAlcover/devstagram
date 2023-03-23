@@ -58,7 +58,7 @@
                         name="email"
                         type="text"
                         placeholder="Tu email"
-                        class="border p-3 w-full rounded @error('emial') border-red-600 @enderror"
+                        class="border p-3 w-full rounded @error('email') border-red-600 @enderror"
                         value="{{old('name')}}"/>
                     @error('email')
                         <p class="bg-red-500 text-white my-2 rounded-lg txt-sm p-2

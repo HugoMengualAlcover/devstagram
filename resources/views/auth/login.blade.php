@@ -7,7 +7,7 @@
 @section('contenido')
     <div class="md:flex md:justify-center md:gap-10 md:items-center">
         <div class="md:w-1/2 p-5">
-            <img src="{{ asset('img/registrar.png') }}" alt="Imagen login de usuarios">
+            <img src="{{ asset('img/usuario.svg') }}" alt="Imagen login de usuarios">
         </div>
         <div class="md:w-1/3 bg-white p-6 rounded-lg shadow-xl">
             <form method="POST" action="{{route('login')}}" novalidate>
@@ -26,7 +26,7 @@
                         name="email"
                         type="text"
                         placeholder="Tu email"
-                        class="border p-3 w-full rounded @error('emial') border-red-600 @enderror"
+                        class="border p-3 w-full rounded @error('email') border-red-600 @enderror"
                         value="{{old('name')}}"/>
                 </div> 
                     @error('email')
